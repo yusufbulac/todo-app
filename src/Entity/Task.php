@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TaskRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -39,6 +41,16 @@ class Task
      * @ORM\Column(type="string", length=255)
      */
     private $provider;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Developer::class, mappedBy="tasks")
+     */
+    private $developers;
+
+    public function __construct()
+    {
+        $this->developers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,6 +101,33 @@ class Task
     public function setProvider(string $provider): self
     {
         $this->provider = $provider;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Developer>
+     */
+    public function getDevelopers(): Collection
+    {
+        return $this->developers;
+    }
+
+    public function addDeveloper(Developer $developer): self
+    {
+        if (!$this->developers->contains($developer)) {
+            $this->developers[] = $developer;
+            $developer->addTask($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeveloper(Developer $developer): self
+    {
+        if ($this->developers->removeElement($developer)) {
+            $developer->removeTask($this);
+        }
 
         return $this;
     }

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241216151018 extends AbstractMigration
+final class Version20241216152122 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,13 +21,19 @@ final class Version20241216151018 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE developer (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, max_hours INT NOT NULL, efficiency INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE developer_task (developer_id INT NOT NULL, task_id INT NOT NULL, INDEX IDX_FAEA66664DD9267 (developer_id), INDEX IDX_FAEA6668DB60186 (task_id), PRIMARY KEY(developer_id, task_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE developer_task ADD CONSTRAINT FK_FAEA66664DD9267 FOREIGN KEY (developer_id) REFERENCES developer (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE developer_task ADD CONSTRAINT FK_FAEA6668DB60186 FOREIGN KEY (task_id) REFERENCES task (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE task ADD created_at DATETIME NOT NULL, ADD updated_at DATETIME NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE developer_task DROP FOREIGN KEY FK_FAEA66664DD9267');
+        $this->addSql('ALTER TABLE developer_task DROP FOREIGN KEY FK_FAEA6668DB60186');
         $this->addSql('DROP TABLE developer');
+        $this->addSql('DROP TABLE developer_task');
         $this->addSql('ALTER TABLE task DROP created_at, DROP updated_at');
     }
 }
