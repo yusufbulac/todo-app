@@ -27,7 +27,7 @@ class Developer
     /**
      * @ORM\Column(type="integer")
      */
-    private $maxHours;
+    private $maxHours = 45;
 
     /**
      * @ORM\Column(type="integer")
