@@ -34,6 +34,24 @@ Once the containers are up, access the application in your browser at:
 http://localhost
 ```
 
+### 3. Running Migrations and Fixtures
+After setting up the containers, you may need to run migrations and load data fixtures for the database. You can do this by executing the following commands inside the container:
+
+- **Access the container:**
+```
+docker exec -it todo-app sh
+```
+
+- **Apply the migration** to update the database:
+```
+php bin/console doctrine:migrations:migrate
+```
+
+- **Load data fixtures** (if you have any predefined data to insert into the database):
+```
+php bin/console doctrine:fixtures:load
+```
+
 ### 5. Stopping the Containers
 To stop the containers, run:
 
