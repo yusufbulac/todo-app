@@ -21,21 +21,22 @@ services:
 
   db:
     image: mysql:latest
-    container_name: mysql_db
+    container_name: todo-db
+    ports:
+      - '${FORWARD_MYSQL_PORT:-3312}:3306'
     environment:
       MYSQL_ROOT_PASSWORD: '${DB_ROOT_PASSWORD:-root}'
       MYSQL_DATABASE: '${DB_DATABASE:-todo_test}'
       MYSQL_USER: '${DB_USERNAME:-todo_user}'
       MYSQL_PASSWORD: '${DB_PASSWORD:-todo_password}'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
     volumes:
-      - db_data:/var/lib/mysql
+      - db_todo:/var/lib/mysql
     networks:
       - todo_network
-    restart: always
 
 volumes:
-  db_data:
+  db_todo:
 
 networks:
   todo_network:
