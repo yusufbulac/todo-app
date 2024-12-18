@@ -27,11 +27,6 @@ class Developer
     /**
      * @ORM\Column(type="integer")
      */
-    private $maxHours = 45;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
     private $efficiency;
 
     /**
@@ -57,18 +52,6 @@ class Developer
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getMaxHours(): ?int
-    {
-        return $this->maxHours;
-    }
-
-    public function setMaxHours(int $maxHours): self
-    {
-        $this->maxHours = $maxHours;
 
         return $this;
     }
