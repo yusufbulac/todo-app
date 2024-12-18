@@ -32,3 +32,10 @@ services:
     App\Service\TaskProviderService:
         arguments:
             $entityManager: '@doctrine.orm.entity_manager'
+
+    App\Service\OptimalTaskAllocationStrategy:
+        tags: ['app.task_allocation_strategy']
+
+    App\Service\TaskAllocationFacade:
+        arguments:
+            $allocationStrategy: '@App\Service\OptimalTaskAllocationStrategy'
