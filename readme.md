@@ -55,7 +55,7 @@ php bin/console doctrine:fixtures:load
 ### 4. Fetch Tasks from Providers
 To fetch tasks from different providers and save them to the database, run the following command:
 ```
-docker-compose exec app php bin/console app:fetch-tasks
+php bin/console app:fetch-tasks
 ```
 This command will fetch tasks from the configured providers (Provider1Adapter and Provider2Adapter) and save them to the database.
 
