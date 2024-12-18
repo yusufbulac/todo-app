@@ -52,7 +52,21 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load
 ```
 
-### 5. Stopping the Containers
+### 4. Fetch Tasks from Providers
+To fetch tasks from different providers and save them to the database, run the following command:
+```
+docker-compose exec app php bin/console app:fetch-tasks
+```
+This command will fetch tasks from the configured providers (Provider1Adapter and Provider2Adapter) and save them to the database.
+
+### 5. Access the Application
+Once the containers are up, the database is set up, and tasks are fetched, you can access the application in your browser at:
+```
+http://localhost/tasks
+```
+The `/tasks` endpoint will allocate the fetched tasks and display the weekly plan.
+
+### 6. Stopping the Containers
 To stop the containers, run:
 
 ```
