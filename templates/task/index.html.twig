@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Task Planning{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Haftalık Görev Dağılımı</h1>
+
+        {% if error is defined %}
+            <div class="alert alert-danger">
+                {{ error }}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <h5>Toplam Proje Süresi: {{ total_weeks }} hafta</h5>
+                <hr>
+                <h6>Tablo Başlıkları Açıklamaları:</h6>
+                <ul class="mb-0">
+                    <li><strong>Task Adı:</strong> Görevi tanımlayan benzersiz isim</li>
+                    <li><strong>Süre:</strong> Task'ın ortalama bir developer tarafından tamamlanması için gereken süre (saat)</li>
+                    <li><strong>Zorluk:</strong> Task'ın zorluk katsayısı (örn: 3x = 3 kat daha zorlu)</li>
+                    <li><strong>Gerçek Süre:</strong> O gün task için harcanan gerçek süre</li>
+                    <li><strong>Gün:</strong> Task'ın atandığı çalışma günü</li>
+                    <li><strong>Provider:</strong> Task'ın geldiği kaynak sistem</li>
+                </ul>
+            </div>
+
+            {% for week, weekData in weekly_plan %}
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        {{ week }}. Hafta
+                    </div>
+                    <div class="card-body">
+                        {% for devId, developerData in weekData %}
+                            <div class="mb-4">
+                                <h5 class="card-title">
+                                    {{ developerData.title }}
+                                </h5>
+                                <table class="table table-bordered">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th>Task Adı</th>
+                                        <th>Süre (saat)</th>
+                                        <th>Zorluk (x)</th>
+                                        <th>Gerçek Süre (saat)</th>
+                                        <th>Gün</th>
+                                        <th>Provider</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for taskData in developerData.tasks %}
+                                        <tr>
+                                            <td>{{ taskData.task.name }}</td>
+                                            <td>{{ taskData.task.duration }}</td>
+                                            <td>{{ taskData.task.difficulty }}</td>
+                                            <td>{{ taskData.effort_display | replace({' saat': ''}) }}</td>
+                                            <td>{{ taskData.day | replace({' Gün': ''}) }}</td>
+                                            <td>{{ taskData.task.provider }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        Günlük Çalışma Saatleri:
+                                        {% for day, hours in developerData.daily_workloads %}
+                                            {{ day }}. Gün: {{ hours|number_format(2) }} saat
+                                            {% if not loop.last %} | {% endif %}
+                                        {% endfor %}
+                                    </small>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
